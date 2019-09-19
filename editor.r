@@ -59,7 +59,7 @@ add-editor: js-native[]{
    var buttondo = document.getElementById( "buttondo")
    buttondo.onclick = function( e) {
       try {
-         reb.Value( document.getElementById( 'editinput').value)
+         reb.Value( "do", reb.T(document.getElementById( 'editinput').value))
       } catch {
          console.log( "Error")
       }
