@@ -12,4 +12,9 @@ text: {
 # Example
 
 Now press "DO" and then enter text<RETURN> in the Ren-C Console.
+
+# Known problems
+
+* there seem to be some race conditions on startup
+* it would be nice to get a better return value on DO
 }
