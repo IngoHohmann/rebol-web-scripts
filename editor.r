@@ -133,4 +133,5 @@ edit: function [
 ; For testing
 remove-editor
 add-editor
-edit http://0pt.pw/db.r
+edit https://raw.githubusercontent.com/IngoHohmann/rebol-web-scripts/master/editor-README.md
+
