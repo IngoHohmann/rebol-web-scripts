@@ -1,12 +1,18 @@
 REBOL [
    Title: "Web Console Editor"
    Author: "Ingo Hohmann"
+   Todo: {
+      - Styling
+      - Rebol highlighting
+      - better return values
+   }
 ]
 
+
 remove-editor: js-native []{
-   var rightPane = document.getElementById( "rightPane")
-   if (rightPane) {
-      rightPane.parentNode.removeChild( rightPane)
+   var editorPane = document.getElementById( "editorPane")
+   if (editorPane) {
+      editorPane.parentNode.removeChild( editorPane)
    }
 }
 
@@ -21,13 +27,18 @@ add-editor: js-native[]{
       .container {
          flex: 50%;
       }
-      #rightPane {
+      #editorPane {
          flex: 50%;
       }
-      #editinput {
+      #editor {
          width: 100%;
          height: 90%;
          display: block;
+      }
+      #buttonrow {
+         text-align: center;
+         background-color: gray;
+         height: 10%;
       }
       button {
          width: 32%;
@@ -35,47 +46,64 @@ add-editor: js-native[]{
       }
    `
 
-   var rightPane = document.createElement('div')
-   rightPane.id = "rightPane"
+   var editorPane = document.createElement('div')
+   editorPane.id = "editorPane"
 
-   rightPane.onkeydown = function( e) {
+   editorPane.onkeydown = function( e) {
       e.stopPropagation()
    }
-   rightPane.addEventListener( 'keypress', function( e) {
+   editorPane.addEventListener( 'keypress', function( e) {
       e.stopPropagation()
    })
 
-   rightPane.innerHTML = `
-   <!--<div contenteditable="true" id="editinput">Edit me</div>-->
-   <textarea id="editinput">Edit me</textarea>
-   <button type="button" id="buttonedit">Edit</button>
-   <button type="button" id="buttonleave">Leave</button>
+   editorPane.innerHTML = `
+   <div contenteditable="true" id="editor">Edit me</div>
+   <!--<textarea id="editor">Edit me</textarea>-->
+   <div id="buttonrow">
    <button type="button" id="buttondo">DO</button>
+   </div>
    `
 
-   body.appendChild( rightPane);
+   body.appendChild( editorPane);
    document.head.appendChild( style)
 
    var buttondo = document.getElementById( "buttondo")
    buttondo.onclick = function( e) {
+      var replPad = document.getElementById( "replpad")
+      var line = document.createElement( "div")
+      line.class = "line"
+      line.innerText = "aBc"
       try {
-         reb.Value( "do", reb.T(document.getElementById( 'editinput').value))
+         //reb.Value( "do", reb.T(document.getElementById( 'editor').innerHTML))
+         reb.Value( "do", reb.T(aceEditor.getValue()))
+         line.innerHTML = "&zwnj;== ; Editor successfull"
       } catch {
          console.log( "Error")
+         line.innerHTML = "&zwnj;== ; Editor error"
       }
+      replPad.insertBefore( line, replPad.lastChild)
    }
+
+   // load the ace editor
+   var script = document.createElement( 'script')
+   script.src = "https://pagecdn.io/lib/ace/1.4.5/ace.js"
+   document.head.appendChild( script)
+
+   script.onload = function() {aceEditor = ace.edit( "editor")}
 }
 
 jsedit: js-native [
    "Set the editor text"
    src [text!]
 ]{
-   var e = document.getElementById( "editinput")
+   //var e = document.getElementById( "editor")
    // using a div
-   // e.innerText = reb.Spell(reb.Arg("src"))
+   //e.innerText = reb.Spell(reb.ArgR("src"))
    // using a textarea
-   e.value = reb.Spell(reb.Arg("src"))
+   // e.value = reb.Spell(reb.ArgR("src"))
 
+   // using ace
+   aceEditor.setValue( reb.Spell(reb.ArgR("src")))
 }
 
 edit: function [
