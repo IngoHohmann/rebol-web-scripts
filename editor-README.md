@@ -1,3 +1,4 @@
+text: {
 # How to use the editor
 
 * Write in the editor
@@ -8,3 +9,7 @@
 
 * you can use EDIT in the console, with text!, binary or url! where binary is converted to text!n and url!s are read, if they are cors-enabled.
 
+# Example
+
+Now press "DO" and then enter text<RETURN> in the Ren-C Console.
+}
