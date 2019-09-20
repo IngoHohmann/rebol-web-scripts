@@ -2,9 +2,14 @@ REBOL [
    Title: "Web Console Editor"
    Author: "Ingo Hohmann"
    Todo: {
-      - Styling
-      - Rebol highlighting
+      - race conditions on startup
       - better return values
+      - Rebol highlighting
+      - Styling
+      - store editor data
+        - localstorage
+        - download?
+        - direct access to github?
    }
 ]
 
