@@ -80,8 +80,8 @@ add-editor: js-native[]{
       try {
          //reb.Value( "do", reb.T(document.getElementById( 'editor').innerHTML))
          //var val = reb.Spell( reb.V( "append copy/part mold (err: trap [_value: do", reb.T(aceEditor.getValue()),"]) then [err] else [_value]", "20", "{ ...}" ))
-         var val = reb.Spell( reb.V( "append copy/part mold do", reb.T(aceEditor.getValue()), "20", "{ ...}" ))
-         line.innerText = "== (Editor) " + val
+         var val = reb.Spell( reb.V( "append copy/part mold do", reb.T(aceEditor.getValue()), "60", "{ ...}" ))
+         line.innerText = "(Editor)\n== " + val
       } catch {
          console.log( "Error")
          line.innerHTML = "&zwnj;== ; Editor error"
