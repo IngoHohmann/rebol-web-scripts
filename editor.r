@@ -77,11 +77,11 @@ add-editor: js-native[]{
       var replPad = document.getElementById( "replpad")
       var line = document.createElement( "div")
       line.class = "line"
-      line.innerText = "aBc"
       try {
          //reb.Value( "do", reb.T(document.getElementById( 'editor').innerHTML))
-         reb.Value( "do", reb.T(aceEditor.getValue()))
-         line.innerHTML = "&zwnj;== ; Editor successfull"
+         //var val = reb.Spell( reb.V( "append copy/part mold (err: trap [_value: do", reb.T(aceEditor.getValue()),"]) then [err] else [_value]", "20", "{ ...}" ))
+         var val = reb.Spell( reb.V( "append copy/part mold do", reb.T(aceEditor.getValue()), "20", "{ ...}" ))
+         line.innerText = "== (Editor) " + val
       } catch {
          console.log( "Error")
          line.innerHTML = "&zwnj;== ; Editor error"
@@ -96,6 +96,13 @@ add-editor: js-native[]{
 
    script.onload = function() {aceEditor = ace.edit( "editor")}
 }
+
+; Test function
+
+t: js-native [x]{
+    alert( reb.Spell( reb.V( "mold do", reb.ArgR( "x"))))
+}
+
 
 jsedit: js-native [
    "Set the editor text"
