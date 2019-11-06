@@ -2,6 +2,7 @@ REBOL [
   Title: "JSFrame Test"
   Author: "Ingo Hohmann"
   Date: 2019-11-06
+  file: https://raw.githubusercontent.com/IngoHohmann/rebol-web-scripts/master/jsframe-test.r
   Note: "Test to open a jsframe window"
   link: https://github.com/riversun/JSFrame.js
 ]
