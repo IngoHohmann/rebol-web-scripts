@@ -2,8 +2,9 @@ REBOL [
   Title: "jsPanel Test"
   Author: "Ingo Hohmann"
   Date: 2019-11-06
+  File: https://raw.githubusercontent.com/IngoHohmann/rebol-web-scripts/master/jspanel-test.r
   Note: "Basic test of jspanel usage"
-  link: https://jspanel.de/getstarted.html
+  Link: https://jspanel.de/getstarted.html
 ]
 
 jspanel: js-native[]{
