@@ -7,7 +7,9 @@ REBOL [
   Link: https://jspanel.de/getstarted.html
 ]
 
-jspanel: js-native[]{
+jspanel: js-native[
+    "load the jspanel library"
+]{
    var script = document.createElement( 'script')
    script.src = "https://cdn.jsdelivr.net/npm/jspanel4@4.6.0/dist/jspanel.js"
    document.head.appendChild( script)
@@ -19,6 +21,8 @@ jspanel: js-native[]{
    script.onload = function() {var jsPanel = new JSFrame();}
 }
 
-openPanel: js-native[]{
+openPanel: js-native[
+    "open a jspanel testwindow"
+]{
     jsPanel.create()
 }
