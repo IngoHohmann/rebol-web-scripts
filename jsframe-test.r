@@ -7,14 +7,21 @@ REBOL [
   link: https://github.com/riversun/JSFrame.js
 ]
 
-jsframe: js-native[]{
+jsframe: js-native[
+    "load the jsframe library"
+]{
    var script = document.createElement( 'script')
    script.src = "https://riversun.github.io/jsframe/jsframe.js"
    document.head.appendChild( script)
    script.onload = function() {var jsFrame = new JSFrame();}
 }
 
-openFrame: js-native[]{
+openFrame: js-native[
+  "Open a jsframe testwindow"
+]{
+    if (!jsFrame) {
+        var jsFrame = new JSFrame()
+    }
     frame = jsFrame.create({
         title: 'Window',
         left: 20, top: 20, width: 320, height: 220,
