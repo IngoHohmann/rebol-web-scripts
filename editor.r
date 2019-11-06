@@ -24,6 +24,33 @@ remove-editor: js-native []{
 add-editor: js-native[]{
    var body = document.getElementsByTagName("body")[0]
 
+
+   var editorPane = document.createElement('div')
+   editorPane.id = "editorPane"
+
+   editorPane.onkeydown = function( e) {
+      e.stopPropagation()
+   }
+   editorPane.addEventListener( 'keypress', function( e) {
+      e.stopPropagation()
+   })
+
+   editorPane.innerHTML = `
+   <div contenteditable="true" id="editor">Edit me</div>
+   <!--<textarea id="editor">Edit me</textarea>-->
+   <div id="buttonrow">
+   <button type="button" id="buttondo">DO</button>
+   </div>`
+
+   body.appendChild( editorPane);
+   
+   // load the ace editor
+   var script = document.createElement( 'script')
+   script.src = "https://pagecdn.io/lib/ace/1.4.5/ace.js"
+   document.head.appendChild( script)
+
+   script.onload = function() {aceEditor = ace.edit( "editor")}
+
    var style = document.createElement( 'style')
    style.innerHTML = `
       body {
@@ -51,25 +78,6 @@ add-editor: js-native[]{
       }
    `
 
-   var editorPane = document.createElement('div')
-   editorPane.id = "editorPane"
-
-   editorPane.onkeydown = function( e) {
-      e.stopPropagation()
-   }
-   editorPane.addEventListener( 'keypress', function( e) {
-      e.stopPropagation()
-   })
-
-   editorPane.innerHTML = `
-   <div contenteditable="true" id="editor">Edit me</div>
-   <!--<textarea id="editor">Edit me</textarea>-->
-   <div id="buttonrow">
-   <button type="button" id="buttondo">DO</button>
-   </div>
-   `
-
-   body.appendChild( editorPane);
    document.head.appendChild( style)
 
    var buttondo = document.getElementById( "buttondo")
@@ -89,12 +97,7 @@ add-editor: js-native[]{
       replPad.insertBefore( line, replPad.lastChild)
    }
 
-   // load the ace editor
-   var script = document.createElement( 'script')
-   script.src = "https://pagecdn.io/lib/ace/1.4.5/ace.js"
-   document.head.appendChild( script)
 
-   script.onload = function() {aceEditor = ace.edit( "editor")}
 }
 
 ; Test function
