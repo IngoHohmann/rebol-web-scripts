@@ -17,4 +17,19 @@ Now press "DO" and then enter text<RETURN> in the Ren-C Console.
 
 * there seem to be some race conditions on startup
 * it would be nice to get a better return value on DO
+
+# Other experiments
+## Open a draggable window, using two different libraries
+### jsframe
+>> do https://raw.githubusercontent.com/IngoHohmann/rebol-web-scripts/master/jsframe-test.r
+>> jsframe
+>> openframe
+
+### jspanel
+>> do https://raw.githubusercontent.com/IngoHohmann/rebol-web-scripts/master/jspanel-test.r
+>> jspanel
+>> openpanel
 }
+
+do https://raw.githubusercontent.com/IngoHohmann/rebol-web-scripts/master/jsframe-test.r
+do https://raw.githubusercontent.com/IngoHohmann/rebol-web-scripts/master/jspanel-test.r
