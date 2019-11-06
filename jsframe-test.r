@@ -3,6 +3,7 @@ REBOL [
   Author: "Ingo Hohmann"
   Date: 2019-11-06
   Note: "Test to open a jsframe window"
+  link: https://github.com/riversun/JSFrame.js
 ]
 
 jsframe: js-native[]{
@@ -12,7 +13,7 @@ jsframe: js-native[]{
    script.onload = function() {var jsFrame = new JSFrame();}
 }
 
-openwindow: js-native[]{
+openFrame: js-native[]{
     frame = jsFrame.create({
     title: 'Window',
     left: 20, top: 20, width: 320, height: 220,
