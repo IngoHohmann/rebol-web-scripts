@@ -15,10 +15,10 @@ jsframe: js-native[]{
 
 openFrame: js-native[]{
     frame = jsFrame.create({
-    title: 'Window',
-    left: 20, top: 20, width: 320, height: 220,
-    movable: true,//Enable to be moved by mouse
-    resizable: true,//Enable to be resized by mouse
-    html: '<div id="my_element" style="padding:10px;font-size:12px;color:darkgray;">Contents of window</div>'
-});
+        title: 'Window',
+        left: 20, top: 20, width: 320, height: 220,
+        movable: true,//Enable to be moved by mouse
+        resizable: true,//Enable to be resized by mouse
+        html: '<div id="my_element" style="padding:10px;font-size:12px;color:darkgray;">Contents of window</div>'
+    });
 }
