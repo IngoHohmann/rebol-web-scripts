@@ -13,6 +13,7 @@ REBOL [
    }
 ]
 
+do %db.r
 
 remove-editor: js-native []{
    var editorPane = document.getElementById( "editorPane")
@@ -40,6 +41,8 @@ add-editor: js-native[]{
    <!--<textarea id="editor">Edit me</textarea>-->
    <div id="buttonrow">
    <button type="button" id="buttondo">DO</button>
+   <button type="button" id="buttondosel">DO Selection</button>
+   <!--<button type="button" id="buttondoline">DO Line</button>-->
    </div>`
 
    body.appendChild( editorPane);
@@ -97,6 +100,35 @@ add-editor: js-native[]{
       replPad.insertBefore( line, replPad.lastChild)
    }
 
+   var buttondosel = document.getElementById( "buttondosel")
+   buttondosel.onclick = function( e) {
+      var replPad = document.getElementById( "replpad")
+      var line = document.createElement( "div")
+      line.class = "line"
+      try {
+         var val = reb.Spell( reb.V( "append copy/part mold do", reb.T(aceEditor.getSelectedText()), "60", "{ ...}" ))
+         line.innerText = "(Editor)\n== " + val
+      } catch {
+         console.log( "Error")
+         line.innerHTML = "&zwnj;== ; Editor error"
+      }
+      replPad.insertBefore( line, replPad.lastChild)
+   }
+
+//   var buttondoline = document.getElementById( "buttondoline")
+//   buttondoline.onclick = function( e) {
+//      var replPad = document.getElementById( "replpad")
+//      var line = document.createElement( "div")
+//      line.class = "line"
+//      try {
+//         var val = reb.Spell( reb.V( "append copy/part mold do", reb.T(aceEditor.getValue()), "60", "{ ...}" ))
+//         line.innerText = "(Editor)\n== " + val
+//      } catch {
+//         console.log( "Error")
+//         line.innerHTML = "&zwnj;== ; Editor error"
+//      }
+//      replPad.insertBefore( line, replPad.lastChild)
+//   }
 
 }
 
@@ -144,6 +176,38 @@ edit: function [
    ]
 ]
 
+editor: make object! [
+    current-file: ""
+    
+    get-text: js-native []{
+        return reb.Text( aceEditor.getValue())
+    }
+    
+    set-text: js-native [text]{
+        aceEditor.setValue( reb.Spell(reb.ArgR("src")))
+    }
+    
+    save: func [
+        "Save current text"
+    ][
+        save-as current-file
+    ]
+    
+    save-as: func [
+        name
+    ][
+        current-file: name
+        db/set unspaced ["editor-file-" name "-curr"] get-text
+    ]
+    
+    load: func [
+        name
+        /version [number!]
+    ][
+        v: either version [rejoin ["-v" version]["-curr"]]
+        jsedit db/get unspaced ["editor-file-" name v]
+    ]
+]
 
 ; For testing
 remove-editor
