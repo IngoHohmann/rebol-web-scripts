@@ -21,7 +21,7 @@ db: make object! [
       key [text!]
    ]{
       var v
-      if (v = localStorage.getItem(reb.Spell(reb.ArgR("k")))) {
+      if (v = localStorage.getItem(reb.Spell(reb.ArgR("key")))) {
          return reb.Text( v)
       } else {
          return reb.Void()
