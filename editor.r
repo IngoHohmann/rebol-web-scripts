@@ -202,7 +202,7 @@ editor: make object! [
     
     load: func [
         name
-        /version [number!]
+        /version [integer!]
     ][
         v: either version [rejoin ["-v" version]["-curr"]]
         jsedit db/get unspaced ["editor-file-" name v]
