@@ -26,5 +26,17 @@ db: make object! [
       } else {
          return reb.Void()
       }
-  }
+   }
+
+   get-db: js-native [
+      "Get complete localStorage db"
+   ]{
+      return reb.Text( JSON.stringify( localStorage))
+   }
+
+   get-keys: js-native [
+      "Get data back from localStorage"
+   ]{
+      return reb.Text( JSON.stringify( Object.keys(localStorage)))
+   }
 ]
