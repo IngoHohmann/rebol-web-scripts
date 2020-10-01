@@ -35,7 +35,7 @@ db: make object! [
    }
 
    get-keys: js-native [
-      "Get data back from localStorage"
+      "Get list of localStorage keys"
    ]{
       return reb.Text( JSON.stringify( Object.keys(localStorage)))
    }
