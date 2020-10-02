@@ -18,7 +18,6 @@ jspanel: js-native[
    style.tyoe = "text/css"
    style.href = "https://cdn.jsdelivr.net/npm/jspanel4@4.6.0/dist/jspanel.css"
    document.head.appendChild( style)
-   script.onload = function() {var jsPanel = new JSFrame();}
 }
 
 openPanel: js-native[
