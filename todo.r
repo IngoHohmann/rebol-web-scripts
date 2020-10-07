@@ -189,9 +189,9 @@ close-jstodo: js-native [ id [text!]]{
 ;
 
 app/init
-app/add [title "Todos" content {<div id="todoPane">
-      <h3>Open Todos</h3><div id="todosOpen"></div>
-      <h3>Closed Todos</h3><div id="todosClosed"></div>
+app/add [title "Todos" content {<div id=\"todoPane\">
+      <h3>Open Todos</h3><div id=\"todosOpen\"></div>
+      <h3>Closed Todos</h3><div id=\"todosClosed\"></div>
       </div>} ]
 initialize-todos
 
