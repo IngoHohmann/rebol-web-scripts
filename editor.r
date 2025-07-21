@@ -154,7 +154,7 @@ jsedit: js-native [
 
 edit: function [
    "Convert to text / read data, and open the editor on it"
-   src [text! binary! url!]
+   src [text! blob! url!]
    :only "take input as is (better names? as-is / mold)"
 ][
    if only [
@@ -165,7 +165,7 @@ edit: function [
       if parse src ["http://" to end] [insert at src 5 "s"]
       trap [src: to text! read src]
    ]
-   if binary? src [
+   if blob? src [
       src: to text! src
    ]
    if text? src [
