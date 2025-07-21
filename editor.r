@@ -89,7 +89,7 @@ add-editor: js-native[] --[
       line.class = "line"
       try {
          //reb.Value( "eval", reb.T(document.getElementById( 'editor').innerHTML))
-         //var val = reb.Spell( reb.V( "append copy:part mold (err: trap [_value: eval", reb.T(aceEditor.getValue()),"]) then [err] else [_value]", "20", "--[ ...]--" ))
+         //var val = reb.Spell( reb.V( "append copy:part mold (err: sys.util/rescue [_value: eval", reb.T(aceEditor.getValue()),"]) then [err] else [_value]", "20", "--[ ...]--" ))
          var val = reb.Spell( reb.V( "append copy:part mold eval", reb.T(aceEditor.getValue()), "60", "--[ ...]--" ))
          line.innerText = "(Editor)\n== " + val
       } catch {
@@ -163,10 +163,10 @@ edit: function [
    if url? src [
       ; for CORS you need to access https sites
       if parse src ["http://" to end] [insert at src 5 "s"]
-      trap [src: to text! read src]
+      src: as text! trap read src  ; aliasing fabricated BLOB! as TEXT! legal
    ]
    if blob? src [
-      src: to text! src
+      src: decode 'UTF-8 text! src  ; TO TEXT! of BLOB! not legal at present
    ]
    if text? src [
       jsedit src
