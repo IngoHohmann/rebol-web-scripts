@@ -22,7 +22,13 @@ remove-editor: js-native [] --[
    }
 ]--
 
-add-editor: js-native[] --[
+; This function is a JS-AWAITER that uses resolve() and reject() instead of
+; `return` to give back its value.  That's because it can't return until the
+; ACE editor is loaded.
+;
+add-editor: js-awaiter [
+   return: []
+] --[
    var body = document.getElementsByTagName("body")[0]
 
    var editorPane = document.createElement('div')
@@ -45,13 +51,6 @@ add-editor: js-native[] --[
    </div>`
 
    body.appendChild( editorPane);
-
-   // load the ace editor
-   var script = document.createElement( 'script')
-   script.src = "https://pagecdn.io/lib/ace/1.4.5/ace.js"
-   document.head.appendChild( script)
-
-   script.onload = function() {aceEditor = ace.edit( "editor")}
 
    var style = document.createElement( 'style')
    style.innerHTML = `
@@ -129,6 +128,28 @@ add-editor: js-native[] --[
 //      replPad.insertBefore( line, replPad.lastChild)
 //   }
 
+    // JS-AWAITER returns control to the JavaScript event loop here.  The
+    // Rebol caller doesn't get resumed until something from the event loop
+    // triggers and calls the resolve() or reject() functions (in this case,
+    // those callbacks are attached to the ACE editor script onload event).
+
+   return new Promise( function( resolve, reject) {
+      var script = document.createElement( 'script')
+      script.src = "https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.14/ace.js"
+      script.onload = function() {
+         if (window.ace) {
+            aceEditor = ace.edit("editor")
+            resolve()
+         } else {
+            reject(new Error("Ace loaded, but didn't initialize window.ace"))
+         }
+      }
+      script.onerror = function(event) {
+         reject(new Error("Failed to load: " + script.src))
+      }
+
+      document.head.appendChild( script)
+   })
 ]--
 
 ; Test function

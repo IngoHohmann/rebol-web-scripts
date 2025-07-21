@@ -7,16 +7,25 @@ Rebol [
     link: https://github.com/riversun/JSFrame.js
 ]
 
-jsframe: js-native[
+jsframe: js-awaiter [
     "load the jsframe library"
+    return: []
 ] --[
-   var script = document.createElement( 'script')
-   script.src = "https://riversun.github.io/jsframe/jsframe.js"
-   document.head.appendChild( script)
-   script.onload = function() {var jsFrame = new JSFrame();}
+    return new Promise( function(resolve, reject) {
+        var script = document.createElement( 'script')
+        script.src = "https://riversun.github.io/jsframe/jsframe.js"
+        document.head.appendChild( script)
+        script.onload = function() {
+            var jsFrame = new JSFrame()
+            resolve()
+        }
+        script.onerror = function(event) {
+            reject(new Error("Failed to load: " + script.src))
+        }
+    })
 ]--
 
-openFrame: js-native[
+openFrame: js-native [
   "Open a jsframe testwindow"
 ] --[
     if (!jsFrame) {
