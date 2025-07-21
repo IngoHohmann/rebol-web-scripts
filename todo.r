@@ -1,7 +1,7 @@
-REBOL [
-  Title: "Todo"
-  Author: "Ingo Hohmann"
-  Note: "A Web Todo App in Rebol"
+Rebol [
+   title: "Todo"
+   author: "Ingo Hohmann"
+   note: "A Web Todo App in Rebol"
 ]
 
 ; load the webtop
@@ -16,33 +16,33 @@ db: make object! [
       "Save to localstorage"
       key [text!]
       value [text!]
-   ]{
+   ] --[
       localStorage.setItem( reb.Spell( reb.Arg( "key")), reb.Spell( reb.Arg( "value")))
-   }
+   ]--
 
    get: js-native [
       "Get data back from localStorage"
       key [text!]
-   ]{
+   ] --[
       var v
       if (v = localStorage.getItem( reb.Spell( reb.ArgR( "key")))) {
          return reb.Text( v)
       } else {
          return reb.Void()
       }
-   }
+   ]--
 
    get-db: js-native [
       "Get complete localStorage db"
-   ]{
+   ] --[
       return reb.Text( JSON.stringify( localStorage))
-   }
+   ]--
 
    get-keys: js-native [
       "Get list of localStorage keys"
-   ]{
+   ] --[
       return reb.Text( JSON.stringify( Object.keys( localStorage)))
-   }
+   ]--
 ]
 
 ;
@@ -50,15 +50,15 @@ db: make object! [
 ;
 
 open-todo-win: function [][
-   open-win "TodoWin" "Todos" {
+   open-win "TodoWin" "Todos" --[
       <div id="todoPane">
       <h3>Open Todos</h3><div id="todosOpen"></div>
       <h3>Closed Todos</h3><div id="todosClosed"></div>
       </div>
-   }
+   ]--
 ]
 
-add-todoPane: js-native[]{
+add-todoPane: js-native[] --[
    var todoPane = document.getElementById( "todoPane")
    if (!todoPane) {
       var appPane = document.getElementById( "appPane")
@@ -96,7 +96,7 @@ add-todoPane: js-native[]{
       document.todosOpen =  document.getElementById( "todosOpen")
       document.todosClosed =  document.getElementById( "todosClosed")
    }
-}
+]--
 
 template: [
    title _
@@ -137,30 +137,30 @@ add-todo: function [title [text!]][
    todo
 ]
 
-add-jstodo: js-native [todo [text!] id [text!]]{
+add-jstodo: js-native [todo [text!] id [text!]] --[
    var div = document.createElement('div')
    div.id = reb.Spell(reb.ArgR("id"))
    div.innerHTML = reb.Spell(reb.ArgR("todo"))
    document.getElementById( "todosOpen").appendChild( div);
-}
+]--
 
-add-jsclosed-todo: js-native [todo [text!] id [text!]]{
+add-jsclosed-todo: js-native [todo [text!] id [text!]] --[
    var div = document.createElement('div')
    div.id = reb.Spell(reb.ArgR("id"))
    div.innerHTML = reb.Spell(reb.ArgR("todo"))
    document.getElementById( "todosClosed").appendChild( div);
-}
+]--
 
 update-todo: function [ todo [text! integer! tag! block!]][
    case [
-      integer? todo 
+      integer? todo
    ]
 ]
 
-update-jstodo: js-native [ id [text!] title [text!]]{
+update-jstodo: js-native [ id [text!] title [text!]] --[
    var div = document.getElementById( reb.Spell(reb.ArgR("id")))
    div.innerHTML = reb.Spell(reb.ArgR("title"))
-}
+]--
 
 close-todo: function [id [text! integer!]][
    if integer? todo [
@@ -178,18 +178,19 @@ close-todo: function [id [text! integer!]][
    close-jstodo form id
 ]
 
-close-jstodo: js-native [ id [text!]]{
+close-jstodo: js-native [ id [text!]] --[
    var div = document.getElementById( reb.Spell(reb.ArgR("id")))
    document.getElementById( "todosOpen").removeChild( div);
    document.getElementById( "todosClosed").appendChild( div);
-}
+]--
 
 ;
 ; Setup
 ;
 
 app/init
-app/add [title "Todos" content {<div id=todoPane><h3>Open Todos</h3><div id=todosOpen></div><h3>Closed Todos</h3><div id=todosClosed></div></div>} ]
+app/add [
+   title "Todos"
+   content --[<div id=todoPane><h3>Open Todos</h3><div id=todosOpen></div><h3>Closed Todos</h3><div id=todosClosed></div></div>]--
+]
 initialize-todos
-
-
