@@ -89,8 +89,8 @@ add-editor: js-native[] --[
       line.class = "line"
       try {
          //reb.Value( "do", reb.T(document.getElementById( 'editor').innerHTML))
-         //var val = reb.Spell( reb.V( "append copy/part mold (err: trap [_value: do", reb.T(aceEditor.getValue()),"]) then [err] else [_value]", "20", "--[ ...]--" ))
-         var val = reb.Spell( reb.V( "append copy/part mold do", reb.T(aceEditor.getValue()), "60", "--[ ...]--" ))
+         //var val = reb.Spell( reb.V( "append copy:part mold (err: trap [_value: do", reb.T(aceEditor.getValue()),"]) then [err] else [_value]", "20", "--[ ...]--" ))
+         var val = reb.Spell( reb.V( "append copy:part mold do", reb.T(aceEditor.getValue()), "60", "--[ ...]--" ))
          line.innerText = "(Editor)\n== " + val
       } catch {
          console.log( "Error")
@@ -105,7 +105,7 @@ add-editor: js-native[] --[
       var line = document.createElement( "div")
       line.class = "line"
       try {
-         var val = reb.Spell( reb.V( "append copy/part mold do", reb.T(aceEditor.getSelectedText()), "60", "--[ ...]--" ))
+         var val = reb.Spell( reb.V( "append copy:part mold do", reb.T(aceEditor.getSelectedText()), "60", "--[ ...]--" ))
          line.innerText = "(Editor)\n== " + val
       } catch {
          console.log( "Error")
@@ -120,7 +120,7 @@ add-editor: js-native[] --[
 //      var line = document.createElement( "div")
 //      line.class = "line"
 //      try {
-//         var val = reb.Spell( reb.V( "append copy/part mold do", reb.T(aceEditor.getValue()), "60", "--[ ...]--" ))
+//         var val = reb.Spell( reb.V( "append copy:part mold do", reb.T(aceEditor.getValue()), "60", "--[ ...]--" ))
 //         line.innerText = "(Editor)\n== " + val
 //      } catch {
 //         console.log( "Error")
@@ -155,7 +155,7 @@ jsedit: js-native [
 edit: function [
    "Convert to text / read data, and open the editor on it"
    src [text! binary! url!]
-   /only "take input as is (better names? as-is / mold"
+   :only "take input as is (better names? as-is / mold)"
 ][
    if only [
       mold src
@@ -201,7 +201,7 @@ editor: make object! [
 
     load: func [
         name
-        /version [integer!]
+        :version [integer!]
     ][
         v: either version [rejoin ["-v" version]["-curr"]]
         jsedit db/get unspaced ["editor-file-" name v]

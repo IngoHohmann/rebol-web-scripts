@@ -114,26 +114,26 @@ todos: [
 
 initialize-todos: function [][
    if text? t: db/get "todos_open" [
-      todos/open: load t
+      todos.open: load t
    ]
    if text? t: db/get "todos_closed" [
-      todos/closed: load t
+      todos.closed: load t
    ]
-   for-each t todos/open [
-      add-jstodo t/1 form t/2
+   for-each t todos.open [
+      add-jstodo t.1 form t.2
    ]
-   for-each t todos/closed [
-      add-jsclosed-todo t/1 form t/2
+   for-each t todos.closed [
+      add-jsclosed-todo t.1 form t.2
    ]
 ]
 
 
 add-todo: function [title [text!]][
-   id: now/precise
+   id: now:precise
    todo: reduce [title id false _ _]
-   append/only todos/open todo
-   db/set "todos_open" mold todos/open
-   add-jstodo todo/1 form todo/2
+   append todos.open todo
+   db/set "todos_open" mold todos.open
+   add-jstodo todo.1 form todo.2
    todo
 ]
 
@@ -166,15 +166,15 @@ close-todo: function [id [text! integer!]][
    if integer? todo [
    ]
    if text? todo [
-      for-next t todos/open [
-         if t/1/2 = id [
-            insert/only todos/closed first t
+      for-next t todos.open [
+         if t.1.2 = id [
+            insert todos.closed first t
             remove t
          ]
       ]
    ]
-   db/set "todos_open" mold todos/open
-   db/set "todos_closed" mold todos/closed
+   db/set "todos_open" mold todos.open
+   db/set "todos_closed" mold todos.closed
    close-jstodo form id
 ]
 
