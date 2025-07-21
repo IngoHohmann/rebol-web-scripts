@@ -13,7 +13,7 @@ db: make object! [
       key [text!]
       value [text!]
    ] --[
-      localStorage.setItem(reb.Spell(reb.Arg("key")), reb.Spell(reb.Arg("value")))
+      localStorage.setItem(reb.Spell("key"), reb.Spell("value"))
    ]--
 
    get: js-native [
@@ -21,7 +21,7 @@ db: make object! [
       key [text!]
    ] --[
       var v
-      if (v = localStorage.getItem(reb.Spell(reb.ArgR("key")))) {
+      if (v = localStorage.getItem(reb.Spell("key"))) {
          return reb.Text( v)
       } else {
          return reb.Void()

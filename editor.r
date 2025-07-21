@@ -134,7 +134,7 @@ add-editor: js-native[] --[
 ; Test function
 
 t: js-native [x] --[
-    alert( reb.Spell( reb.V( "mold eval", reb.ArgR( "x"))))
+    alert( reb.Spell( reb.V( "mold eval x")))
 ]--
 
 
@@ -144,12 +144,12 @@ jsedit: js-native [
 ] --[
    //var e = document.getElementById( "editor")
    // using a div
-   //e.innerText = reb.Spell(reb.ArgR("src"))
+   //e.innerText = reb.Spell( "src")
    // using a textarea
-   // e.value = reb.Spell(reb.ArgR("src"))
+   // e.value = reb.Spell( "src")
 
    // using ace
-   aceEditor.setValue( reb.Spell(reb.ArgR("src")))
+   aceEditor.setValue( reb.Spell( "src"))
 ]--
 
 edit: function [
@@ -183,7 +183,7 @@ editor: make object! [
     ]--
 
     set-text: js-native [text] --[
-        aceEditor.setValue( reb.Spell(reb.ArgR("src")))
+        aceEditor.setValue( reb.Spell( "src"))
     ]--
 
     save: func [

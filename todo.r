@@ -17,7 +17,7 @@ db: make object! [
       key [text!]
       value [text!]
    ] --[
-      localStorage.setItem( reb.Spell( reb.Arg( "key")), reb.Spell( reb.Arg( "value")))
+      localStorage.setItem( reb.Spell( "key"), reb.Spell( "value"))
    ]--
 
    get: js-native [
@@ -25,7 +25,7 @@ db: make object! [
       key [text!]
    ] --[
       var v
-      if (v = localStorage.getItem( reb.Spell( reb.ArgR( "key")))) {
+      if (v = localStorage.getItem( reb.Spell( "key"))) {
          return reb.Text( v)
       } else {
          return reb.Void()
@@ -139,15 +139,15 @@ add-todo: function [title [text!]][
 
 add-jstodo: js-native [todo [text!] id [text!]] --[
    var div = document.createElement('div')
-   div.id = reb.Spell(reb.ArgR("id"))
-   div.innerHTML = reb.Spell(reb.ArgR("todo"))
+   div.id = reb.Spell("id")
+   div.innerHTML = reb.Spell("todo")
    document.getElementById( "todosOpen").appendChild( div);
 ]--
 
 add-jsclosed-todo: js-native [todo [text!] id [text!]] --[
    var div = document.createElement('div')
-   div.id = reb.Spell(reb.ArgR("id"))
-   div.innerHTML = reb.Spell(reb.ArgR("todo"))
+   div.id = reb.Spell("id")
+   div.innerHTML = reb.Spell("todo")
    document.getElementById( "todosClosed").appendChild( div);
 ]--
 
@@ -158,8 +158,8 @@ update-todo: function [ todo [text! integer! tag! block!]][
 ]
 
 update-jstodo: js-native [ id [text!] title [text!]] --[
-   var div = document.getElementById( reb.Spell(reb.ArgR("id")))
-   div.innerHTML = reb.Spell(reb.ArgR("title"))
+   var div = document.getElementById(reb.Spell("id"))
+   div.innerHTML = reb.Spell("title")
 ]--
 
 close-todo: function [id [text! integer!]][
@@ -179,7 +179,7 @@ close-todo: function [id [text! integer!]][
 ]
 
 close-jstodo: js-native [ id [text!]] --[
-   var div = document.getElementById( reb.Spell(reb.ArgR("id")))
+   var div = document.getElementById(reb.Spell("id"))
    document.getElementById( "todosOpen").removeChild( div);
    document.getElementById( "todosClosed").appendChild( div);
 ]--

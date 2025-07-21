@@ -21,8 +21,8 @@ openPanel: js-native [
     "open a jspanel testwindow"
     json [text!]
 ] --[
-    console.log( reb.Spell( reb.ArgR( "json")))
-    jsPanel.create(JSON.parse( reb.Spell( reb.ArgR( "json"))))
+    console.log( reb.Spell( "json"))
+    jsPanel.create( JSON.parse( reb.Spell( "json")))
 ]--
 
 testPanel: js-native [
