@@ -28,7 +28,7 @@ db: make object! [
       if (v = localStorage.getItem( reb.Spell( "key"))) {
          return reb.Text( v)
       } else {
-         return reb.Void()
+         return null
       }
    ]--
 
@@ -113,10 +113,10 @@ todos: [
 ]
 
 initialize-todos: function [][
-   if text? t: db/get "todos_open" [
+   if text? opt t: db/get "todos_open" [
       todos.open: load t
    ]
-   if text? t: db/get "todos_closed" [
+   if text? opt t: db/get "todos_closed" [
       todos.closed: load t
    ]
    for-each t todos.open [

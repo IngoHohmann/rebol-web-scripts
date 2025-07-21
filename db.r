@@ -24,7 +24,7 @@ db: make object! [
       if (v = localStorage.getItem(reb.Spell("key"))) {
          return reb.Text( v)
       } else {
-         return reb.Void()
+         return null
       }
    ]--
 
