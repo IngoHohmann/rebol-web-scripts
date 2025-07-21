@@ -108,8 +108,8 @@ template: [
 ]
 
 todos: [
-   open []
-   closed []
+   open: []
+   closed: []
 ]
 
 initialize-todos: function [][
