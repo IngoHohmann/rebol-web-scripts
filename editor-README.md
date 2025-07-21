@@ -2,8 +2,8 @@ text: {
 # How to use the editor
 
 * Write in the editor
-* click the "DO" Button
-* The content of the editor will be DOne in the Rebol console, Feedback is very limited at the moment.
+* click the "EVAL" Button
+* The content of the editor will be EVAL'd in the Rebol console, Feedback is very limited at the moment.
 
 # Getting text into the editor
 
@@ -11,7 +11,7 @@ text: {
 
 # Example
 
-Now press "DO" and then enter text<RETURN> in the Ren-C Console.
+Now press "EVAL" and then enter text<RETURN> in the Ren-C Console.
 
 # Known problems
 

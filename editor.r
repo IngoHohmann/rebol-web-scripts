@@ -39,9 +39,9 @@ add-editor: js-native[] --[
    <div contenteditable="true" id="editor">Edit me</div>
    <!--<textarea id="editor">Edit me</textarea>-->
    <div id="buttonrow">
-   <button type="button" id="buttondo">DO</button>
-   <button type="button" id="buttondosel">DO Selection</button>
-   <!--<button type="button" id="buttondoline">DO Line</button>-->
+   <button type="button" id="buttoneval">EVAL</button>
+   <button type="button" id="buttonevalsel">EVAL Selection</button>
+   <!--<button type="button" id="buttonevalline">EVAL Line</button>-->
    </div>`
 
    body.appendChild( editorPane);
@@ -82,15 +82,15 @@ add-editor: js-native[] --[
 
    document.head.appendChild( style)
 
-   var buttondo = document.getElementById( "buttondo")
-   buttondo.onclick = function( e) {
+   var buttoneval = document.getElementById( "buttoneval")
+   buttoneval.onclick = function( e) {
       var replPad = document.getElementById( "replpad")
       var line = document.createElement( "div")
       line.class = "line"
       try {
-         //reb.Value( "do", reb.T(document.getElementById( 'editor').innerHTML))
-         //var val = reb.Spell( reb.V( "append copy:part mold (err: trap [_value: do", reb.T(aceEditor.getValue()),"]) then [err] else [_value]", "20", "--[ ...]--" ))
-         var val = reb.Spell( reb.V( "append copy:part mold do", reb.T(aceEditor.getValue()), "60", "--[ ...]--" ))
+         //reb.Value( "eval", reb.T(document.getElementById( 'editor').innerHTML))
+         //var val = reb.Spell( reb.V( "append copy:part mold (err: trap [_value: eval", reb.T(aceEditor.getValue()),"]) then [err] else [_value]", "20", "--[ ...]--" ))
+         var val = reb.Spell( reb.V( "append copy:part mold eval", reb.T(aceEditor.getValue()), "60", "--[ ...]--" ))
          line.innerText = "(Editor)\n== " + val
       } catch {
          console.log( "Error")
@@ -99,13 +99,13 @@ add-editor: js-native[] --[
       replPad.insertBefore( line, replPad.lastChild)
    }
 
-   var buttondosel = document.getElementById( "buttondosel")
-   buttondosel.onclick = function( e) {
+   var buttonevalsel = document.getElementById( "buttonevalsel")
+   buttonevalsel.onclick = function( e) {
       var replPad = document.getElementById( "replpad")
       var line = document.createElement( "div")
       line.class = "line"
       try {
-         var val = reb.Spell( reb.V( "append copy:part mold do", reb.T(aceEditor.getSelectedText()), "60", "--[ ...]--" ))
+         var val = reb.Spell( reb.V( "append copy:part mold eval", reb.T(aceEditor.getSelectedText()), "60", "--[ ...]--" ))
          line.innerText = "(Editor)\n== " + val
       } catch {
          console.log( "Error")
@@ -114,13 +114,13 @@ add-editor: js-native[] --[
       replPad.insertBefore( line, replPad.lastChild)
    }
 
-//   var buttondoline = document.getElementById( "buttondoline")
-//   buttondoline.onclick = function( e) {
+//   var buttonevalline = document.getElementById( "buttonevalline")
+//   buttonevalline.onclick = function( e) {
 //      var replPad = document.getElementById( "replpad")
 //      var line = document.createElement( "div")
 //      line.class = "line"
 //      try {
-//         var val = reb.Spell( reb.V( "append copy:part mold do", reb.T(aceEditor.getValue()), "60", "--[ ...]--" ))
+//         var val = reb.Spell( reb.V( "append copy:part mold eval", reb.T(aceEditor.getValue()), "60", "--[ ...]--" ))
 //         line.innerText = "(Editor)\n== " + val
 //      } catch {
 //         console.log( "Error")
@@ -134,7 +134,7 @@ add-editor: js-native[] --[
 ; Test function
 
 t: js-native [x] --[
-    alert( reb.Spell( reb.V( "mold do", reb.ArgR( "x"))))
+    alert( reb.Spell( reb.V( "mold eval", reb.ArgR( "x"))))
 ]--
 
 
