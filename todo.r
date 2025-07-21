@@ -119,10 +119,10 @@ initialize-todos: function [][
    if text? opt t: db/get "todos_closed" [
       todos.closed: load t
    ]
-   for-each t todos.open [
+   for-each 't todos.open [
       add-jstodo t.1 form t.2
    ]
-   for-each t todos.closed [
+   for-each 't todos.closed [
       add-jsclosed-todo t.1 form t.2
    ]
 ]
@@ -166,7 +166,7 @@ close-todo: function [id [text! integer!]][
    if integer? todo [
    ]
    if text? todo [
-      for-next t todos.open [
+      for-next 't todos.open [
          if t.1.2 = id [
             insert todos.closed first t
             remove t
