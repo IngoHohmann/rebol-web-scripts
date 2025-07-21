@@ -135,7 +135,7 @@ add-todo: function [title [text!]][
    append todos.open todo
    db/set "todos_open" mold todos.open
    add-jstodo todo.1 form todo.2
-   todo
+   return todo
 ]
 
 add-jstodo: js-native [todo [text!] id [text!]] --[
