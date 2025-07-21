@@ -133,7 +133,7 @@ initialize-todos: function [][
 
 export add-todo: function [title [text!]][
    let id: now:precise
-   let todo: reduce [title id false _ _]
+   let todo: reduce [title id 'false _ _]
    append todos.open todo
    db/set "todos_open" mold todos.open
    add-jstodo todo.1 form todo.2
