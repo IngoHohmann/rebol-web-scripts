@@ -171,7 +171,7 @@ edit: function [
    if text? src [
       jsedit src
    ] else [
-      fail "unable to get text from source"
+      panic "unable to get text from source"
    ]
 ]
 
