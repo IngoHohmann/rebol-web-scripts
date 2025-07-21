@@ -1,6 +1,7 @@
 Rebol [
    title: "Web Console Editor"
    author: "Ingo Hohmann"
+   type: module
    todo: --[
       - race conditions on startup
       - better return values
@@ -13,9 +14,9 @@ Rebol [
    ]--
 ]
 
-do %db.r
+import <db.r>  ; angle brackets means look in same directory as this file
 
-remove-editor: js-native [] --[
+export remove-editor: js-native [] --[
    var editorPane = document.getElementById( "editorPane")
    if (editorPane) {
       editorPane.parentNode.removeChild( editorPane)
@@ -26,7 +27,7 @@ remove-editor: js-native [] --[
 ; `return` to give back its value.  That's because it can't return until the
 ; ACE editor is loaded.
 ;
-add-editor: js-awaiter [
+export add-editor: js-awaiter [
    return: []
 ] --[
    var body = document.getElementsByTagName("body")[0]
@@ -154,7 +155,7 @@ add-editor: js-awaiter [
 
 ; Test function
 
-t: js-native [x] --[
+export t: js-native [x] --[
     alert( reb.Spell( reb.V( "mold eval x")))
 ]--
 
@@ -173,7 +174,7 @@ jsedit: js-native [
    aceEditor.setValue( reb.Spell( "src"))
 ]--
 
-edit: function [
+export edit: function [
    "Convert to text / read data, and open the editor on it"
    src [text! blob! url!]
    :only "take input as is (better names? as-is / mold)"
@@ -194,7 +195,7 @@ edit: function [
    ]
 ]
 
-editor: make object! [
+export editor: make object! [
     current-file: ""
 
     get-text: js-native [] --[

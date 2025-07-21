@@ -1,13 +1,18 @@
 Rebol [
     title: "jsPanel Test"
     author: "Ingo Hohmann"
+    type: module
     date: 2019-11-06
     file: https://raw.githubusercontent.com/IngoHohmann/rebol-web-scripts/master/jspanel-test.r
     note: "Basic test of jspanel usage"
     link: https://jspanel.de/getstarted.html
+    usage: --[
+        jspanel
+        openPanel
+    ]--
 ]
 
-jspanel: js-awaiter [
+export jspanel: js-awaiter [
     "load the jspanel library"
     return: []
 ] --[
@@ -41,7 +46,7 @@ jspanel: js-awaiter [
     })
 ]--
 
-openPanel: js-native [
+export openPanel: js-native [
     "open a jspanel testwindow"
 ] --[
     jsPanel.create()

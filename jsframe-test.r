@@ -1,13 +1,18 @@
 Rebol [
     title: "JSFrame Test"
     author: "Ingo Hohmann"
+    type: module
     date: 2019-11-06
     file: https://raw.githubusercontent.com/IngoHohmann/rebol-web-scripts/master/jsframe-test.r
     note: "Test to open a jsframe window"
     link: https://github.com/riversun/JSFrame.js
+    usage: --[
+        jsframe
+        openFrame
+    ]--
 ]
 
-jsframe: js-awaiter [
+export jsframe: js-awaiter [
     "load the jsframe library"
     return: []
 ] --[
@@ -25,7 +30,7 @@ jsframe: js-awaiter [
     })
 ]--
 
-openFrame: js-native [
+export openFrame: js-native [
   "Open a jsframe testwindow"
 ] --[
     if (!jsFrame) {
@@ -37,5 +42,6 @@ openFrame: js-native [
         movable: true,//Enable to be moved by mouse
         resizable: true,//Enable to be resized by mouse
         html: '<div id="my_element" style="padding:10px;font-size:12px;color:darkgray;">Contents of window</div>'
-    });
+    })
+    frame.show()
 ]--

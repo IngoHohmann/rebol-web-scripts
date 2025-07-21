@@ -1,13 +1,17 @@
 Rebol [
    title: "localStorage Access for Rebol"
    author: "Ingo Hohmann"
+   type: module
    todo: --[
       - should there be an automatic conversion to/from text! for other types?
       - indexeddb
    ]--
+   usage: --[
+      import https://raw.githubusercontent.com/IngoHohmann/rebol-web-scripts/master/db.r
+   ]--
 ]
 
-db: make object! [
+export db: make object! [
    set: js-native [
       "Save to localstorage"
       key [text!]

@@ -1,10 +1,11 @@
 Rebol [
    title: "Web Top"
    author: "Ingo Hohmann"
+   type: module
    note: "Uses jspanel to create app windows"
 ]
 
-jspanel: js-awaiter [
+export jspanel: js-awaiter [
     "load the jspanel library"
     return: []
 ] --[
@@ -38,7 +39,7 @@ jspanel: js-awaiter [
     })
 ]--
 
-openPanel: js-native [
+export openPanel: js-native [
     "open a jspanel testwindow"
     json [text!]
 ] --[
@@ -46,7 +47,7 @@ openPanel: js-native [
     jsPanel.create( JSON.parse( reb.Spell( "json")))
 ]--
 
-testPanel: js-native [
+export testPanel: js-native [
     "open a jspanel testwindow"
 ] --[
     jsPanel.create({
@@ -55,8 +56,7 @@ testPanel: js-native [
    })
 ]--
 
-
-rebPanel: js-native [
+export rebPanel: js-native [
    "Move Rebol console into jsPanel"
 ] --[
    jsPanel.create({
@@ -67,7 +67,7 @@ rebPanel: js-native [
    document.getElementById( "newConsole").appendChild( cons)
 ]--
 
-app: make object! [
+export app: make object! [
    init: method [][
       jspanel
       rebPanel

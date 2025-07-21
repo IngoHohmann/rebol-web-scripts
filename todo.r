@@ -1,15 +1,18 @@
 Rebol [
    title: "Todo"
    author: "Ingo Hohmann"
+   type: module
    note: "A Web Todo App in Rebol"
 ]
 
-; load the webtop
-do https://raw.githubusercontent.com/IngoHohmann/rebol-web-scripts/master/webtop.r
+=== LOAD WEBTOP ===
 
-;
-; Database
-;
+; Webtop uses jspanel to create app windows
+
+import <webtop.r>
+
+
+=== DATABASE ===
 
 db: make object! [
    set: js-native [
@@ -45,11 +48,10 @@ db: make object! [
    ]--
 ]
 
-;
-; Todos
-;
 
-open-todo-win: function [][
+=== TODOS ===
+
+export open-todo-win: function [][
    open-win "TodoWin" "Todos" --[
       <div id="todoPane">
       <h3>Open Todos</h3><div id="todosOpen"></div>
@@ -58,7 +60,7 @@ open-todo-win: function [][
    ]--
 ]
 
-add-todoPane: js-native[] --[
+export add-todoPane: js-native[] --[
    var todoPane = document.getElementById( "todoPane")
    if (!todoPane) {
       var appPane = document.getElementById( "appPane")
@@ -129,7 +131,7 @@ initialize-todos: function [][
 ]
 
 
-add-todo: function [title [text!]][
+export add-todo: function [title [text!]][
    let id: now:precise
    let todo: reduce [title id false _ _]
    append todos.open todo
@@ -163,7 +165,7 @@ update-jstodo: js-native [ id [text!] title [text!]] --[
    div.innerHTML = reb.Spell("title")
 ]--
 
-close-todo: function [id [text! integer!]][
+export close-todo: function [id [text! integer!]][
    if integer? todo [
    ]
    if text? todo [
@@ -185,9 +187,8 @@ close-jstodo: js-native [ id [text!]] --[
    document.getElementById( "todosClosed").appendChild( div);
 ]--
 
-;
-; Setup
-;
+
+=== SETUP ===
 
 app/init
 app/add [
