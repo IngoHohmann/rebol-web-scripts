@@ -113,6 +113,7 @@ todos: [
 ]
 
 initialize-todos: function [][
+   let t
    if text? opt t: db/get "todos_open" [
       todos.open: load t
    ]
@@ -129,8 +130,8 @@ initialize-todos: function [][
 
 
 add-todo: function [title [text!]][
-   id: now:precise
-   todo: reduce [title id false _ _]
+   let id: now:precise
+   let todo: reduce [title id false _ _]
    append todos.open todo
    db/set "todos_open" mold todos.open
    add-jstodo todo.1 form todo.2

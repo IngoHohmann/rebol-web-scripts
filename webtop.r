@@ -76,7 +76,7 @@ app: make object! [
       "Add a new App Panel"
       definition [block!]
    ][
-      json: reword --[{
+      let json: reword --[{
          "headerTitle": "$title",
          "content": "$content"
       }]-- definition
