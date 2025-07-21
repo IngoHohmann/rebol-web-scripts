@@ -59,7 +59,6 @@ app: make object! [
          "headerTitle": "$title",
          "content": "$content"
       }]-- definition
-      -- json
       openPanel json
    ]
 ]
