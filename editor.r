@@ -161,8 +161,6 @@ edit: function [
       mold src
    ]
    if url? src [
-      ; for CORS you need to access https sites
-      if parse src ["http://" to end] [insert at src 5 "s"]
       src: as text! trap read src  ; aliasing fabricated BLOB! as TEXT! legal
    ]
    if blob? src [
