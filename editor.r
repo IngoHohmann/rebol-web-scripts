@@ -82,52 +82,38 @@ export add-editor: js-awaiter [
 
    document.head.appendChild( style)
 
-   var buttoneval = document.getElementById( "buttoneval")
-   buttoneval.onclick = function( e) {
+   let Eval_Helper = function(e, code) {
       var replPad = document.getElementById( "replpad")
       var line = document.createElement( "div")
       line.class = "line"
       try {
-         //reb.Value( "eval", reb.T(document.getElementById( 'editor').innerHTML))
-         //var val = reb.Spell( reb.V( "append copy:part mold (err: sys.util/rescue [_value: eval", reb.T(aceEditor.getValue()),"]) then [err] else [_value]", "20", "--[ ...]--" ))
-         var val = reb.Spell( reb.V( "append copy:part mold eval", reb.T(aceEditor.getValue()), "60", "--[ ...]--" ))
-         line.innerText = "(Editor)\n== " + val
-      } catch {
-         console.log( "Error")
+         let opt_antiform = ""
+         let value = reb.Value( code)
+         if (reb.UnboxLogic( "antiform? @", value)) {
+            value = reb.Lift( reb.Q( reb.R( value)))
+            opt_antiform = " ; antiform"
+         }
+         let molded = reb.Spell( "mold:limit", value, "60")
+         reb.Release( value)
+         line.innerText = "(Editor)\n== " + molded + opt_antiform
+      } catch (err) {
+         console.log( err)
          line.innerHTML = "&zwnj;== ; Editor error"
       }
       replPad.insertBefore( line, replPad.lastChild)
+   }
+
+   var buttoneval = document.getElementById( "buttoneval")
+   buttoneval.onclick = function( e) {
+      Eval_Helper(e, aceEditor.getValue())
    }
 
    var buttonevalsel = document.getElementById( "buttonevalsel")
    buttonevalsel.onclick = function( e) {
-      var replPad = document.getElementById( "replpad")
-      var line = document.createElement( "div")
-      line.class = "line"
-      try {
-         var val = reb.Spell( reb.V( "append copy:part mold eval", reb.T(aceEditor.getSelectedText()), "60", "--[ ...]--" ))
-         line.innerText = "(Editor)\n== " + val
-      } catch {
-         console.log( "Error")
-         line.innerHTML = "&zwnj;== ; Editor error"
-      }
-      replPad.insertBefore( line, replPad.lastChild)
+      Eval_Helper(e, aceEditor.getSelectedText())
    }
 
-//   var buttonevalline = document.getElementById( "buttonevalline")
-//   buttonevalline.onclick = function( e) {
-//      var replPad = document.getElementById( "replpad")
-//      var line = document.createElement( "div")
-//      line.class = "line"
-//      try {
-//         var val = reb.Spell( reb.V( "append copy:part mold eval", reb.T(aceEditor.getValue()), "60", "--[ ...]--" ))
-//         line.innerText = "(Editor)\n== " + val
-//      } catch {
-//         console.log( "Error")
-//         line.innerHTML = "&zwnj;== ; Editor error"
-//      }
-//      replPad.insertBefore( line, replPad.lastChild)
-//   }
+   /* var buttonevalline = document.getElementById( "buttonevalline") */
 
     // JS-AWAITER returns control to the JavaScript event loop here.  The
     // Rebol caller doesn't get resumed until something from the event loop
