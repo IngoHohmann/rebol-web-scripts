@@ -2,16 +2,16 @@ text: {
 # How to use the editor
 
 * Write in the editor
-* click the "DO" Button
-* The content of the editor will be DOne in the Rebol console, Feedback is very limited at the moment.
+* click the "EVAL" Button
+* The content of the editor will be EVAL'd in the Rebol console, Feedback is very limited at the moment.
 
 # Getting text into the editor
 
-* you can use EDIT in the console, with text!, binary or url! where binary is converted to text!n and url!s are read, if they are cors-enabled.
+* you can use EDIT in the console, with text!, blob! or url! where blob is converted to text! and url!s are read, if they are cors-enabled.
 
 # Example
 
-Now press "DO" and then enter text<RETURN> in the Ren-C Console.
+Now press "EVAL" and then enter text<RETURN> in the Ren-C Console.
 
 # Known problems
 
@@ -29,10 +29,10 @@ Now press "DO" and then enter text<RETURN> in the Ren-C Console.
     >> jsframe
     >> openframe
 
-or 
+or
 
     >> edit https://raw.githubusercontent.com/IngoHohmann/rebol-web-scripts/master/jsframe-test.r
-    
+
 ### jspanel
 
     >> do https://raw.githubusercontent.com/IngoHohmann/rebol-web-scripts/master/jspanel-test.r

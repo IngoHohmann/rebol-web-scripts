@@ -1,7 +1,8 @@
-REBOL [
-   Title: "Web Console Editor"
-   Author: "Ingo Hohmann"
-   Todo: {
+Rebol [
+   title: "Web Console Editor"
+   author: "Ingo Hohmann"
+   type: module
+   todo: --[
       - race conditions on startup
       - better return values
       - Rebol highlighting
@@ -10,21 +11,26 @@ REBOL [
         - localstorage
         - download?
         - direct access to github?
-   }
+   ]--
 ]
 
-do %db.r
+import <db.r>  ; angle brackets means look in same directory as this file
 
-remove-editor: js-native []{
+export remove-editor: js-native [] --[
    var editorPane = document.getElementById( "editorPane")
    if (editorPane) {
       editorPane.parentNode.removeChild( editorPane)
    }
-}
+]--
 
-add-editor: js-native[]{
+; This function is a JS-AWAITER that uses resolve() and reject() instead of
+; `return` to give back its value.  That's because it can't return until the
+; ACE editor is loaded.
+;
+export add-editor: js-awaiter [
+   return: []
+] --[
    var body = document.getElementsByTagName("body")[0]
-
 
    var editorPane = document.createElement('div')
    editorPane.id = "editorPane"
@@ -40,19 +46,12 @@ add-editor: js-native[]{
    <div contenteditable="true" id="editor">Edit me</div>
    <!--<textarea id="editor">Edit me</textarea>-->
    <div id="buttonrow">
-   <button type="button" id="buttondo">DO</button>
-   <button type="button" id="buttondosel">DO Selection</button>
-   <!--<button type="button" id="buttondoline">DO Line</button>-->
+   <button type="button" id="buttoneval">EVAL</button>
+   <button type="button" id="buttonevalsel">EVAL Selection</button>
+   <!--<button type="button" id="buttonevalline">EVAL Line</button>-->
    </div>`
 
    body.appendChild( editorPane);
-   
-   // load the ace editor
-   var script = document.createElement( 'script')
-   script.src = "https://pagecdn.io/lib/ace/1.4.5/ace.js"
-   document.head.appendChild( script)
-
-   script.onload = function() {aceEditor = ace.edit( "editor")}
 
    var style = document.createElement( 'style')
    style.innerHTML = `
@@ -83,126 +82,132 @@ add-editor: js-native[]{
 
    document.head.appendChild( style)
 
-   var buttondo = document.getElementById( "buttondo")
-   buttondo.onclick = function( e) {
+   let Eval_Helper = function(e, code) {
       var replPad = document.getElementById( "replpad")
       var line = document.createElement( "div")
       line.class = "line"
       try {
-         //reb.Value( "do", reb.T(document.getElementById( 'editor').innerHTML))
-         //var val = reb.Spell( reb.V( "append copy/part mold (err: trap [_value: do", reb.T(aceEditor.getValue()),"]) then [err] else [_value]", "20", "{ ...}" ))
-         var val = reb.Spell( reb.V( "append copy/part mold do", reb.T(aceEditor.getValue()), "60", "{ ...}" ))
-         line.innerText = "(Editor)\n== " + val
-      } catch {
-         console.log( "Error")
+         let opt_antiform = ""
+         let value = reb.Value( code)
+         if (reb.UnboxLogic( "antiform? @", value)) {
+            value = reb.Lift( reb.Q( reb.R( value)))
+            opt_antiform = " ; antiform"
+         }
+         let molded = reb.Spell( "mold:limit", value, "60")
+         reb.Release( value)
+         line.innerText = "(Editor)\n== " + molded + opt_antiform
+      } catch (err) {
+         console.log( err)
          line.innerHTML = "&zwnj;== ; Editor error"
       }
       replPad.insertBefore( line, replPad.lastChild)
    }
 
-   var buttondosel = document.getElementById( "buttondosel")
-   buttondosel.onclick = function( e) {
-      var replPad = document.getElementById( "replpad")
-      var line = document.createElement( "div")
-      line.class = "line"
-      try {
-         var val = reb.Spell( reb.V( "append copy/part mold do", reb.T(aceEditor.getSelectedText()), "60", "{ ...}" ))
-         line.innerText = "(Editor)\n== " + val
-      } catch {
-         console.log( "Error")
-         line.innerHTML = "&zwnj;== ; Editor error"
-      }
-      replPad.insertBefore( line, replPad.lastChild)
+   var buttoneval = document.getElementById( "buttoneval")
+   buttoneval.onclick = function( e) {
+      Eval_Helper(e, aceEditor.getValue())
    }
 
-//   var buttondoline = document.getElementById( "buttondoline")
-//   buttondoline.onclick = function( e) {
-//      var replPad = document.getElementById( "replpad")
-//      var line = document.createElement( "div")
-//      line.class = "line"
-//      try {
-//         var val = reb.Spell( reb.V( "append copy/part mold do", reb.T(aceEditor.getValue()), "60", "{ ...}" ))
-//         line.innerText = "(Editor)\n== " + val
-//      } catch {
-//         console.log( "Error")
-//         line.innerHTML = "&zwnj;== ; Editor error"
-//      }
-//      replPad.insertBefore( line, replPad.lastChild)
-//   }
+   var buttonevalsel = document.getElementById( "buttonevalsel")
+   buttonevalsel.onclick = function( e) {
+      Eval_Helper(e, aceEditor.getSelectedText())
+   }
 
-}
+   /* var buttonevalline = document.getElementById( "buttonevalline") */
+
+    // JS-AWAITER returns control to the JavaScript event loop here.  The
+    // Rebol caller doesn't get resumed until something from the event loop
+    // triggers and calls the resolve() or reject() functions (in this case,
+    // those callbacks are attached to the ACE editor script onload event).
+
+   return new Promise( function( resolve, reject) {
+      var script = document.createElement( 'script')
+      script.src = "https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.14/ace.js"
+      script.onload = function() {
+         if (window.ace) {
+            aceEditor = ace.edit("editor")
+            resolve()
+         } else {
+            reject(new Error("Ace loaded, but didn't initialize window.ace"))
+         }
+      }
+      script.onerror = function(event) {
+         reject(new Error("Failed to load: " + script.src))
+      }
+
+      document.head.appendChild( script)
+   })
+]--
 
 ; Test function
 
-t: js-native [x]{
-    alert( reb.Spell( reb.V( "mold do", reb.ArgR( "x"))))
-}
+export t: js-native [x] --[
+    alert( reb.Spell( reb.V( "mold eval x")))
+]--
 
 
 jsedit: js-native [
    "Set the editor text"
    src [text!]
-]{
+] --[
    //var e = document.getElementById( "editor")
    // using a div
-   //e.innerText = reb.Spell(reb.ArgR("src"))
+   //e.innerText = reb.Spell( "src")
    // using a textarea
-   // e.value = reb.Spell(reb.ArgR("src"))
+   // e.value = reb.Spell( "src")
 
    // using ace
-   aceEditor.setValue( reb.Spell(reb.ArgR("src")))
-}
+   aceEditor.setValue( reb.Spell( "src"))
+]--
 
-edit: function [
+export edit: function [
    "Convert to text / read data, and open the editor on it"
-   src [text! binary! url!]
-   /only "take input as is (better names? as-is / mold"
+   src [text! blob! url!]
+   :only "take input as is (better names? as-is / mold)"
 ][
    if only [
       mold src
    ]
    if url? src [
-      ; for CORS you need to access https sites
-      if parse src ["http://" to end] [insert at src 5 "s"]
-      trap [src: to text! read src]
+      src: as text! trap read src  ; aliasing fabricated BLOB! as TEXT! legal
    ]
-   if binary? src [
-      src: to text! src
+   if blob? src [
+      src: decode 'UTF-8 text! src  ; TO TEXT! of BLOB! not legal at present
    ]
    if text? src [
       jsedit src
    ] else [
-      fail "unable to get text from source"
+      panic "unable to get text from source"
    ]
 ]
 
-editor: make object! [
+export editor: make object! [
     current-file: ""
-    
-    get-text: js-native []{
+
+    get-text: js-native [] --[
         return reb.Text( aceEditor.getValue())
-    }
-    
-    set-text: js-native [text]{
-        aceEditor.setValue( reb.Spell(reb.ArgR("src")))
-    }
-    
+    ]--
+
+    set-text: js-native [text] --[
+        aceEditor.setValue( reb.Spell( "src"))
+    ]--
+
     save: func [
         "Save current text"
     ][
         save-as current-file
     ]
-    
+
     save-as: func [
         name
     ][
         current-file: name
         db/set unspaced ["editor-file-" name "-curr"] get-text
     ]
-    
+
     load: func [
         name
-        /version [integer!]
+        :version [integer!]
     ][
         v: either version [rejoin ["-v" version]["-curr"]]
         jsedit db/get unspaced ["editor-file-" name v]
@@ -213,4 +218,3 @@ editor: make object! [
 remove-editor
 add-editor
 edit https://raw.githubusercontent.com/IngoHohmann/rebol-web-scripts/master/editor-README.md
-
